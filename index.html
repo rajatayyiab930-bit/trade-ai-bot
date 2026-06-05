@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#0D0D1A">
+  <title>TradeX AI - Trading Simulator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- Splash Screen -->
+  <div id="splash" class="splash">
+    <div class="splash-bg"></div>
+    <div class="splash-content">
+      <div class="splash-icon">
+        <svg viewBox="0 0 60 60" fill="none"><rect width="60" height="60" rx="14" fill="url(#sg)"/><path d="M30 15v18M21 24h18" stroke="#fff" stroke-width="3.5" stroke-linecap="round"/><circle cx="30" cy="40" r="5" fill="#fff" opacity=".3"/></svg>
+        <defs><linearGradient id="sg" x1="0" y1="0" x2="60" y2="60"><stop offset="0%" stop-color="#6C63FF"/><stop offset="100%" stop-color="#8B7FFF"/></linearGradient></defs>
+      </div>
+      <h1 class="splash-title">TradeX AI</h1>
+      <div class="splash-loader"><div class="splash-bar"><div class="splash-fill" id="splashProgress"></div></div><p id="splashStatus">Loading...</p></div>
+    </div>
+  </div>
+
+  <!-- Auth Screen -->
+  <div id="authScreen" class="screen auth-screen hidden">
+    <div class="auth-bg"><div class="auth-particle p1"></div><div class="auth-particle p2"></div><div class="auth-particle p3"></div></div>
+    <div class="auth-container" id="loginForm">
+      <div class="auth-header"><div class="auth-logo"><svg viewBox="0 0 40 40" fill="none"><rect width="40" height="40" rx="10" fill="url(#sg2)"/><path d="M20 10v12M14 16h12" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/></svg></div><h1>TradeX AI</h1><p>AI-Powered Trading Simulator</p></div>
+      <div class="form-group"><label>Email</label><input type="email" id="loginEmail" class="glass-input" placeholder="your@email.com"><span class="input-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></span></div>
+      <div class="form-group"><label>Password</label><input type="password" id="loginPass" class="glass-input" placeholder="••••••••"><span class="input-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span></div>
+      <button id="loginBtn" class="btn-primary">Sign In</button>
+      <div class="auth-divider"><span>OR</span></div>
+      <button id="googleBtn" class="btn-outline"><svg viewBox="0 0 24 24" width="18"><path fill="#fff" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/><path fill="#fff" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#fff" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#fff" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg> Continue with Google</button>
+      <p class="auth-footer">Don't have an account? <a href="#" id="showRegister">Sign Up</a></p>
+    </div>
+    <div class="auth-container hidden" id="registerForm">
+      <div class="auth-header"><h1>Create Account</h1><p>Start with $999,999,999 Demo Balance</p></div>
+      <div class="form-group"><label>Full Name</label><input type="text" id="regName" class="glass-input" placeholder="John Doe"></div>
+      <div class="form-group"><label>Username</label><input type="text" id="regUser" class="glass-input" placeholder="johndoe"></div>
+      <div class="form-group"><label>Email</label><input type="email" id="regEmail" class="glass-input" placeholder="your@email.com"></div>
+      <div class="form-group"><label>Country</label><input type="text" id="regCountry" class="glass-input" placeholder="United States"></div>
+      <div class="form-group"><label>Password</label><input type="password" id="regPass" class="glass-input" placeholder="Min 6 characters"></div>
+      <button id="registerBtn" class="btn-primary">Create Account</button>
+      <p class="auth-footer">Already have an account? <a href="#" id="showLogin">Sign In</a></p>
+    </div>
+  </div>
+
+  <!-- Main App -->
+  <div id="appScreen" class="screen app-screen hidden">
+    <!-- Sidebar -->
+    <aside id="sidebar" class="sidebar hidden">
+      <div class="sidebar-header"><h3>TradeX AI</h3><button id="closeSidebar" class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+      <div class="sidebar-user"><div class="sidebar-avatar" id="sidebarAvatar">U</div><div><p id="sidebarName">User</p><p id="sidebarLevel">Beginner</p></div></div>
+      <nav class="sidebar-nav">
+        <a href="#" class="nav-item active" data-tab="dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg> Dashboard</a>
+        <a href="#" class="nav-item" data-tab="trade"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg> Trade</a>
+        <a href="#" class="nav-item" data-tab="portfolio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><line x1="18" y1="12" x2="18" y2="12.01"/></svg> Portfolio</a>
+        <a href="#" class="nav-item" data-tab="ai"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a4 4 0 0 1 4 4c0 2-2 4-4 6-2-2-4-4-4-6a4 4 0 0 1 4-4z"/><path d="M12 22v-8"/><path d="M9 18h6"/></svg> AI Assistant</a>
+        <a href="#" class="nav-item" data-tab="rewards"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg> Rewards</a>
+        <a href="#" class="nav-item" data-tab="settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg> Settings</a>
+      </nav>
+      <div class="sidebar-footer"><button id="logoutBtn" class="btn-outline small"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg> Sign Out</button></div>
+    </aside>
+    <div id="sidebarOverlay" class="overlay hidden"></div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <!-- Top Bar -->
+      <header class="topbar">
+        <button id="menuBtn" class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+        <div class="topbar-center"><h2 id="pageTitle">Dashboard</h2></div>
+        <div class="topbar-right">
+          <span class="balance-badge" id="headerBalance">$999.9M</span>
+          <div class="avatar-small" id="headerAvatar">U</div>
+        </div>
+      </header>
+
+      <!-- Pages -->
+      <div class="pages-container" id="pagesContainer">
+        <!-- Dashboard -->
+        <div class="page active" id="pageDashboard">
+          <div class="scroll-content">
+            <div class="balance-card">
+              <div class="balance-top"><span>Total Balance</span><span class="demo-tag">DEMO</span></div>
+              <div class="balance-amount" id="dashTotalBalance">$999,999,999</div>
+              <div class="balance-row"><span class="balance-chip" id="dashBalanceChip">Balance: $999.9M</span><span class="balance-chip" id="dashPortfolioChip">Portfolio: $0</span></div>
+            </div>
+            <div class="stats-row" id="profitRow"><div class="stat-card"><div class="stat-icon daily-icon"></div><div class="stat-value green" id="dashDaily">$0</div><div class="stat-label">Daily P&L</div></div><div class="stat-card"><div class="stat-icon weekly-icon"></div><div class="stat-value" id="dashWeekly">$0</div><div class="stat-label">Weekly P&L</div></div><div class="stat-card"><div class="stat-icon monthly-icon"></div><div class="stat-value" id="dashMonthly">$0</div><div class="stat-label">Monthly P&L</div></div></div>
+            <div class="section-title"><h3>Market Overview</h3></div>
+            <div class="assets-list" id="assetsList"></div>
+            <div class="section-title"><h3>Recent Trades</h3></div>
+            <div class="trades-mini" id="recentTrades"><p class="muted">No trades yet</p></div>
+          </div>
+        </div>
+
+        <!-- Trade -->
+        <div class="page" id="pageTrade">
+          <div class="scroll-content">
+            <div class="asset-selector" id="assetSelector"></div>
+            <div class="trade-price-card" id="tradePriceCard"><p class="muted">Select an asset</p></div>
+            <div class="trade-toggle"><button class="toggle-btn buy active" id="buyToggle">Buy</button><button class="toggle-btn sell" id="sellToggle">Sell</button></div>
+            <div class="form-group"><label>Quantity</label><input type="number" id="tradeQty" class="glass-input" placeholder="0.00"></div>
+            <div class="form-group"><label>Price (<span id="tradePriceLabel">Market</span>)</label><input type="number" id="tradePrice" class="glass-input" placeholder="Market price" disabled></div>
+            <div class="order-types"><button class="order-type active" data-type="market">Market</button><button class="order-type" data-type="limit">Limit</button><button class="order-type" data-type="stop">Stop Loss</button></div>
+            <div class="trade-total"><span>Est. Total</span><span id="tradeTotal">$0.00</span></div>
+            <button id="executeTradeBtn" class="btn-primary trade-execute">Place Order</button>
+          </div>
+        </div>
+
+        <!-- Portfolio -->
+        <div class="page" id="pagePortfolio">
+          <div class="scroll-content">
+            <div class="balance-card portfolio-card">
+              <div class="balance-top"><span>Portfolio Value</span></div>
+              <div class="balance-amount" id="portfolioValue">$0</div>
+              <div class="balance-row"><span class="balance-chip" id="portfolioInvested">Invested: $0</span><span class="balance-chip" id="portfolioPnl">P&L: $0</span><span class="balance-chip" id="portfolioRoi">ROI: 0%</span></div>
+            </div>
+            <div class="section-title"><h3>Holdings</h3></div>
+            <div class="holdings-list" id="holdingsList"><p class="muted">No holdings yet</p></div>
+          </div>
+        </div>
+
+        <!-- AI Assistant -->
+        <div class="page" id="pageAI">
+          <div class="ai-chat-container">
+            <div class="ai-messages" id="aiMessages"><div class="ai-msg ai"><div class="ai-avatar">AI</div><div class="ai-bubble">Hello! I'm TradeX AI, your personal trading assistant. Ask me about markets, strategies, or your portfolio!</div></div></div>
+            <div class="ai-suggestions" id="aiSuggestions"><button class="suggestion-chip">How do I start trading?</button><button class="suggestion-chip">What is Bitcoin?</button><button class="suggestion-chip">Risk management tips</button></div>
+            <div class="ai-input-bar"><input type="text" id="aiInput" class="glass-input" placeholder="Ask TradeX AI..."><button id="aiSendBtn" class="icon-btn send-ai"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button></div>
+          </div>
+        </div>
+
+        <!-- Rewards -->
+        <div class="page" id="pageRewards">
+          <div class="scroll-content">
+            <div class="level-card"><div class="level-icon">🏆</div><div><h3 id="userLevel">Beginner</h3><div class="xp-bar"><div class="xp-fill" id="xpFill" style="width:30%"></div></div><p id="userXP">0 XP</p></div></div>
+            <div class="section-title"><h3>Daily Login Rewards</h3></div>
+            <div class="daily-rewards" id="dailyRewards"></div>
+            <button id="claimDailyBtn" class="btn-primary">Claim Daily Reward</button>
+            <div class="section-title"><h3>Referral Program</h3></div>
+            <div class="referral-card"><div class="referral-icon">👥</div><div><p class="referral-title">Invite Friends</p><p class="referral-sub">Earn $50,000 per referral</p></div><span class="referral-count" id="referralCount">0</span></div>
+          </div>
+        </div>
+
+        <!-- Settings -->
+        <div class="page" id="pageSettings">
+          <div class="scroll-content">
+            <div class="settings-profile"><div class="settings-avatar" id="settingsAvatar">U</div><div><h3 id="settingsName">User</h3><p id="settingsEmail">user@email.com</p></div></div>
+            <div class="settings-section"><h4>Profile</h4><div class="form-group"><label>Display Name</label><input type="text" id="settingsDisplayName" class="glass-input"></div></div>
+            <div class="settings-section"><h4>Preferences</h4><div class="setting-row"><span>Sound Effects</span><label class="toggle"><input type="checkbox" id="soundPref" checked><span class="slider"></span></label></div></div>
+            <div class="settings-section"><h4>Account</h4><button id="exportDataBtn" class="btn-outline small"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Export Data</button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
